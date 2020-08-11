@@ -25,11 +25,7 @@ namespace mongoBackup {
                         if (!string.IsNullOrEmpty(backup_path)) {
 
                             if (AppData.Settings.azureblob_enabled) {
-                                if (Task.Run(async () => await AzureBlobStorage.UploadAsync(backup_path)).Result) {
-
-                                    mongotools.DeleteBackup(backup_path);
-                                    Console.WriteLine("Finished and uploaded backup");
-                                }
+                                if (Task.Run(async () => await AzureBlobStorage.UploadAsync(backup_path)).Result) Console.WriteLine("Finished and uploaded backup");
                             }
                             else {
                                 Console.WriteLine("Created backup locally");

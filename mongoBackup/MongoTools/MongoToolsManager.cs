@@ -8,7 +8,7 @@ namespace mongoBackup.MongoTools {
 
     public class MongoToolsManager {
 
-        protected static readonly string _backup_folder = Environment.CurrentDirectory + "/mongobackups";
+        protected static readonly string _backup_folder = "./mongobackups";
         private string _database { get; set; }
 
 
@@ -54,7 +54,7 @@ namespace mongoBackup.MongoTools {
                             RedirectStandardOutput = true,
                             UseShellExecute = false,
                             CreateNoWindow = true,
-                            Arguments = mongodump_command
+                            Arguments = $"/C \"{mongodump_command}\""
                         }
                     };
 
