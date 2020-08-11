@@ -1,17 +1,27 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace mongoBackup {
     public class AppSettings {
 
-        public string database { get; set; } = string.Empty;
-        public string connection_string { get; set; } = string.Empty;
-        private string _settings_path { get; set; } = "./appsettings.json";
+        public List<string> databases { get; set; } = new List<string>();
+        public string bash_location { get; set; } = "cmd.exe";
+        public bool azureblob_enabled { get; set; } = false;
+        public AzureBlobSetting azureblob_settings { get; set; } = new AzureBlobSetting();
+        
+        
+        private string _settings_path { get; set; } = "./backupsettings.json";
 
 
         public AppSettings() { }
 
+
+        /// <summary>
+        /// New AppSettings Class instance with settings file builder
+        /// </summary>
+        /// <param name="loading"></param>
         public AppSettings(bool loading) {
             if (loading) {
                 try {
@@ -22,8 +32,10 @@ namespace mongoBackup {
 
                             var setting = JsonConvert.DeserializeObject<AppSettings>(data);
                             if (setting != null) {
-                                this.database = setting.database;
-                                this.connection_string = setting.connection_string;
+                                this.databases = setting.databases;
+                                this.bash_location = setting.bash_location;
+                                this.azureblob_enabled = setting.azureblob_enabled;
+                                this.azureblob_settings = setting.azureblob_settings;
                             }
                         }
                     }
@@ -44,7 +56,29 @@ namespace mongoBackup {
         /// </summary>
         /// <returns>Boolean</returns>
         public bool Loaded() {
-            return !string.IsNullOrEmpty(this.database) ? true : false;
+            
+            var loaded = false;
+
+            if (!string.IsNullOrEmpty(this.bash_location)) loaded = true;
+
+
+            if (this.azureblob_enabled) {
+                if (this.azureblob_settings != null) {
+                    if (!string.IsNullOrEmpty(this.azureblob_settings.azureblob_endpoint) && !string.IsNullOrEmpty(this.azureblob_settings.azureblob_key) && !string.IsNullOrEmpty(this.azureblob_settings.azureblob_name)) loaded = true;
+                    else loaded = false;
+                }
+                else loaded = false;
+            }
+
+            return loaded;
         }
+    }
+
+
+    public class AzureBlobSetting {
+
+        public string azureblob_endpoint { get; set; }
+        public string azureblob_key { get; set; }
+        public string azureblob_name { get; set; }
     }
 }

@@ -1,29 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\werners\\repos\\azure_toolset\\mongo_backup\\mongoBackup\\mongoBackup.csproj": {}
+    "/home/werners/repos/mongobackup/mongoBackup/mongoBackup.csproj": {}
   },
   "projects": {
-    "C:\\Users\\werners\\repos\\azure_toolset\\mongo_backup\\mongoBackup\\mongoBackup.csproj": {
+    "/home/werners/repos/mongobackup/mongoBackup/mongoBackup.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\werners\\repos\\azure_toolset\\mongo_backup\\mongoBackup\\mongoBackup.csproj",
+        "projectUniqueName": "/home/werners/repos/mongobackup/mongoBackup/mongoBackup.csproj",
         "projectName": "mongoBackup",
-        "projectPath": "C:\\Users\\werners\\repos\\azure_toolset\\mongo_backup\\mongoBackup\\mongoBackup.csproj",
-        "packagesPath": "C:\\Users\\werners\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\werners\\repos\\azure_toolset\\mongo_backup\\mongoBackup\\obj\\",
+        "projectPath": "/home/werners/repos/mongobackup/mongoBackup/mongoBackup.csproj",
+        "packagesPath": "/home/werners/.nuget/packages/",
+        "outputPath": "/home/werners/repos/mongobackup/mongoBackup/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\werners\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/werners/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://pkgs.dev.azure.com/kiekert/_packaging/kiekert/nuget/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
@@ -39,6 +36,10 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Azure.Storage.Blobs": {
+              "target": "Package",
+              "version": "[12.4.3, )"
+            },
             "MongoDB.Bson": {
               "target": "Package",
               "version": "[2.10.4, )"
@@ -71,7 +72,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.301/RuntimeIdentifierGraph.json"
         }
       }
     }

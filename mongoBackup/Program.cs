@@ -1,22 +1,51 @@
-﻿using mongoBackup.MongoDb;
+﻿using mongoBackup.MongoTools;
 using System;
 using System.Threading.Tasks;
 
-namespace mongoBackup {
-    class Program {
-        static async Task Main(string[] args) {
 
-            Console.WriteLine("MongoDb Backup Utility" + Environment.NewLine);
+namespace mongoBackup {
+
+    class Program {
+        static void Main(string[] args) {
+
+            Console.WriteLine("MongoDb Backup Task" + Environment.NewLine);
 
             if (AppData.Settings.Loaded()) {
+                
+                MongoToolsManager.Init();
 
-                // Swap comments on these lines in order to create or restore a backup
-                await MongoDbBackup.CreateBackupAsync();
-                //await MongoDbBackup.RestoreBackupAsync("backup-25-05-2020-d1f5cd77-6dd4-4586-9675-a46eb0db5ad6.json", "azurerestore");
+                foreach (var db in AppData.Settings.databases) {
+                    if (!string.IsNullOrEmpty(db)) {
+
+                        Console.WriteLine($"Start backup for: {db}");
+
+                        var mongotools = new MongoToolsManager(db);
+                        var backup_path = mongotools.CreateBackup();
+
+                        if (!string.IsNullOrEmpty(backup_path)) {
+
+                            if (AppData.Settings.azureblob_enabled) {
+                                if (Task.Run(async () => await AzureBlobStorage.UploadAsync(backup_path)).Result) {
+
+                                    mongotools.DeleteBackup(backup_path);
+                                    Console.WriteLine("Finished and uploaded backup");
+                                }
+                            }
+                            else {
+                                Console.WriteLine("Created backup locally");
+                            }
+                        }
+                        else {
+                            Console.WriteLine("!** Failed backup. Backup file not found. **!");
+                        }
+                    }
+                }
             }
             else {
                 Console.WriteLine("Settings have not been loaded. Please try again.");
             }
+
+            Console.WriteLine("FINISHED all backup tasks!");
         }
     }
 }
