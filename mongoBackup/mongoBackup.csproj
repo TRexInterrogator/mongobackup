@@ -13,4 +13,10 @@
     <PackageReference Include="Azure.Storage.Blobs" Version="12.4.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="scripts\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </Content>
+  </ItemGroup>
+
 </Project>

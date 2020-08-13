@@ -8,7 +8,7 @@ namespace mongoBackup.MongoTools {
 
     public class MongoToolsManager {
 
-        protected static readonly string _backup_folder = "./mongobackups";
+        protected static readonly string _backup_folder = "./backups";
         private string _database { get; set; }
 
 
@@ -38,6 +38,66 @@ namespace mongoBackup.MongoTools {
         /// <returns>Path to backup zip file</returns>
         public string CreateBackup() {
             
+            if (AppData.Settings.system == "windows") return this.CreateBackupWindowsServer();
+            else if (AppData.Settings.system == "linux-docker") return this.CreateBackupLinuxDocker();
+            else return string.Empty;
+        }
+
+
+
+        /// <summary>
+        /// Created a backup on linux-docker configuration
+        /// </summary>
+        /// <returns>Path to backup zip file</returns>
+        private string CreateBackupLinuxDocker() {
+
+            var created_path = string.Empty;
+
+            try {
+                if (!string.IsNullOrEmpty(this._database) && !string.IsNullOrEmpty(AppData.Settings.bash_location)) {
+
+                    var folder_id = $"{DateTime.UtcNow.ToString("dd-MM-yyyy")}-{Guid.NewGuid().ToString()}";
+
+                    var mongoscript_command = $"bash ./scripts/create_mongobackup.sh {folder_id} {this._database}";
+                    var escaped_agrs = mongoscript_command.Replace("\"", "\\\"");
+
+
+                    var mongodump_process = new Process() {
+                        StartInfo = new ProcessStartInfo {
+                            FileName = AppData.Settings.bash_location,
+                            RedirectStandardOutput = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true,
+                            Arguments = $"-c \"{escaped_agrs}\""
+                        }
+                    };
+
+                    mongodump_process.Start();
+                    mongodump_process.WaitForExit();
+
+
+                    var zip_path = $"{_backup_folder}/{folder_id}.zip";
+                    var folder_path = $"{_backup_folder}/{folder_id}";
+                    ZipFile.CreateFromDirectory(folder_path, zip_path);
+
+                    // Delete raw backup data
+                    Directory.Delete(folder_path, true);
+
+                    created_path = zip_path;
+                }
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"!** Failed creating backup dump: {ex.Message} **!");
+            }
+
+            return created_path;
+        }
+
+
+
+
+        private string CreateBackupWindowsServer() {
+
             var created_path = string.Empty;
 
             try {
