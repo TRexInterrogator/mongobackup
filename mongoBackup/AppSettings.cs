@@ -7,8 +7,9 @@ namespace mongoBackup {
     public class AppSettings {
 
         public List<string> databases { get; set; } = new List<string>();
-        public string bash_location { get; set; } = "cmd.exe";
+        public string bash_location { get; set; } = "/bin/bash";
         public bool azureblob_enabled { get; set; } = false;
+        public string system { get; set; } = "linux-docker";
         public AzureBlobSetting azureblob_settings { get; set; } = new AzureBlobSetting();
         
         
@@ -36,6 +37,7 @@ namespace mongoBackup {
                                 this.bash_location = setting.bash_location;
                                 this.azureblob_enabled = setting.azureblob_enabled;
                                 this.azureblob_settings = setting.azureblob_settings;
+                                this.system = setting.system;
                             }
                         }
                     }

@@ -1,0 +1,14 @@
+[Unit]
+Description=mongoDb backup service
+
+[Service]
+WorkingDirectory=/mongobackup/latest_linux-docker
+ExecStart=/mongobackup/latest_linux-docker/mongoBackup
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=1d
