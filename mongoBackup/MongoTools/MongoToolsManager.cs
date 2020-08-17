@@ -56,7 +56,7 @@ namespace mongoBackup.MongoTools {
             try {
                 if (!string.IsNullOrEmpty(this._database) && !string.IsNullOrEmpty(AppData.Settings.bash_location)) {
 
-                    var folder_id = $"{DateTime.UtcNow.ToString("dd-MM-yyyy")}-{Guid.NewGuid().ToString()}";
+                    var folder_id = $"{DateTime.UtcNow.ToString("dd-MM-yyyy")}-{this._database}-{Guid.NewGuid().ToString()}";
 
                     var mongoscript_command = $"bash ./scripts/create_mongobackup.sh {folder_id} {this._database}";
                     var escaped_agrs = mongoscript_command.Replace("\"", "\\\"");

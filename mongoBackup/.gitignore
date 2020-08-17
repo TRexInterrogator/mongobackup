@@ -3,3 +3,4 @@ obj/
 bin/
 mongobackups/
 backupsettings.json
+backups/
