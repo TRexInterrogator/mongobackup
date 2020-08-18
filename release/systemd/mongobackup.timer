@@ -1,0 +1,9 @@
+[Unit]
+Description=Runns mongobackup every day
+
+[Timer]
+OnCalendar=*-*-* 00:00:00
+Unit=mongobackup.service
+
+[Install]
+WantedBy=multi-user.target
