@@ -6,9 +6,10 @@ WorkingDirectory=/mongobackup/latest_linux-docker
 ExecStart=/mongobackup/latest_linux-docker/mongoBackup
 KillSignal=SIGINT
 
-[Install]
-WantedBy=multi-user.target
-
 [Timer]
-OnBootSec=5min
-OnUnitActiveSec=1d
+OnCalendar=daily
+AccuracySec=1h
+Persistant=True
+
+[Install]
+WantedBy=timers.target
