@@ -2,13 +2,10 @@
 Description=mongoDb backup service
 
 [Service]
-WorkingDirectory=/mongobackup/latest_linux-docker
-ExecStart=/mongobackup/latest_linux-docker/mongoBackup
+Type=simple
+WorkingDirectory=/mongobackup/src
+ExecStart=/mongobackup/src/mongoBackup
 KillSignal=SIGINT
 
 [Install]
 WantedBy=multi-user.target
-
-[Timer]
-OnBootSec=5min
-OnUnitActiveSec=1d
