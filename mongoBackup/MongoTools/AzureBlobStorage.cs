@@ -44,5 +44,30 @@ namespace mongoBackup.MongoTools {
 
             return uploaded;
         }
+
+
+
+        /// <summary>
+        /// Deletes an azure storage blob file
+        /// </summary>
+        /// <param name="path">Blob path</param>
+        /// <returns>Success status</returns>
+        public static async Task<bool> DeleteBlobAsync(string path) {
+
+            var deleted = false;
+
+            try {
+                var blobservice_client = new BlobServiceClient(AppData.Settings.azureblob_settings.azureblob_endpoint);
+                var container_client = blobservice_client.GetBlobContainerClient(AppData.Settings.azureblob_settings.azureblob_name);
+                var blobclient = container_client.GetBlobClient(path);
+
+                deleted = await blobclient.DeleteIfExistsAsync();
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Failed deleting AzureBlob: {ex.Message}");
+            }
+
+            return deleted;
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace mongoBackup {
         public bool azureblob_enabled { get; set; } = false;
         public string system { get; set; } = "linux-docker";
         public AzureBlobSetting azureblob_settings { get; set; } = new AzureBlobSetting();
+        public AutoDeleteSettings auto_delete { get; set; } = new AutoDeleteSettings();
         
         
         private string _settings_path { get; set; } = "./backupsettings.json";
@@ -38,6 +39,7 @@ namespace mongoBackup {
                                 this.azureblob_enabled = setting.azureblob_enabled;
                                 this.azureblob_settings = setting.azureblob_settings;
                                 this.system = setting.system;
+                                this.auto_delete = setting.auto_delete;
                             }
                         }
                     }
@@ -82,5 +84,12 @@ namespace mongoBackup {
         public string azureblob_endpoint { get; set; }
         public string azureblob_key { get; set; }
         public string azureblob_name { get; set; }
+    }
+
+
+    public class AutoDeleteSettings {
+
+        public bool enabled { get; set; } = true;
+        public int keep_last_x_days { get; set; } = 3;
     }
 }

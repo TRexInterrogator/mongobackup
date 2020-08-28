@@ -3,4 +3,6 @@ obj/
 bin/
 mongobackups/
 backupsettings.json
+backupsettings-copy.json
+backupLogs.json
 backups/
